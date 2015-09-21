@@ -71,11 +71,26 @@ if [[ ! -r "$app_delegate_file" ]]; then
     exit 1
 fi
 
-project_file_tmp=$(mktemp "project_file.XXXXXX")
+# -r: raw (disable backslash escaping)
+# -d: read until delimiter, in this case: switch off newline as delimiter
+read -r -d '' PERL_PROGRAM <<END_OF_PERL_PROGRAM
+s<^       # beginning of line (therefore we use the m-modifier)
+  (       # start group
+  [^\n]*? # match some characters in the same line (don't use dot here because
+          # it will also match newlines because of the /s modifier)
+  Main\.storyboard
+  [^\n]*  # non-newline characters (see above)
+  {\s*\n  # opening brace that is the last non-whitespace character in a line
+  .*?     # some characters, possibly spread over multiple lines (/s modifier)
+  };\s*\n # and a closing brace
+  )       # end group
+  ><>smx;
 
-./remove_storyboard.pl "${project_file}" > "${project_file_tmp}"
+s<^.*?(Main\.storyboard.*?[\n])><>gm;
+END_OF_PERL_PROGRAM
 
-mv "${project_file_tmp}" "${project_file}"
+# -0777 enables slurp mode
+perl -0777 -pi -E "$PERL_PROGRAM" "$project_file"
 
 rm "${storyboard_file}"
 
