@@ -99,13 +99,13 @@ PATTERN='// Override point for customization after application launch.'
 read -r -d '' REPLACEMENT << EOM
         // Override point for customization after application launch.
 
-        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window = UIWindow(frame: UIScreen.main.bounds)
         guard let window = window else {
             fatalError("window was nil in app delegate")
         }
         window.rootViewController = ViewController()
         window.makeKeyAndVisible()
-        window.backgroundColor = UIColor.whiteColor()
+        window.backgroundColor = UIColor.white
 EOM
 
 perl -pi -E"s<$PATTERN><$REPLACEMENT>" "${app_delegate_file}"
