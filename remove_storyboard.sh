@@ -10,7 +10,7 @@
 #   you don't have to type it yourself.
 
 if [[ $# != 0 ]]; then
-    echo "Usage: $0 (no args - or use remove_storyboard_helper.sh directly)"
+    echo "Usage: $0 (No args. Use remove_storyboard_helper.sh for more control)"
     exit 1
 fi
 
