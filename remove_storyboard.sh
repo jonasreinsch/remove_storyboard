@@ -26,6 +26,11 @@ if [[ -n $(git status --porcelain) ]]; then
     exit 1
 fi
 
+if [[ ! -d .git ]]; then
+    echo "Expects to be run from top level directory of a git repository."
+    exit 1
+fi
+
 # - remove_storyboard_helper.sh is expected in the same directory
 #   as remove_storyboard.sh (script_directory)
 # - normalize the script directory (readlink -f not available under OS X,
