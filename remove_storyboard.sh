@@ -1,4 +1,13 @@
 #!/bin/bash
+# wrapper around remove_storyboard_helper.sh (which does the actual work
+# and can also be used directly).
+# basically, this wrapper does the following
+# - checks if we are in a git repository
+# - checks if we have uncommited changes
+# - runs remove_storyboard_helper.sh to remove the storyboard
+# - if the storyboard was successfully removed
+#   adds a git commit command to the pasteboard so that
+#   you don't have to type it yourself.
 
 if [[ $# != 0 ]]; then
     echo "Usage: $0 (no args - or use remove_storyboard_helper.sh directly)"
@@ -35,6 +44,3 @@ fi
 git_command="git add .; git commit -m 'remove storyboard'"
 echo "Copied to pasteboard: ${git_command}"
 echo -n "${git_command}" | pbcopy
-
-
-
