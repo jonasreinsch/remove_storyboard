@@ -17,6 +17,9 @@ if [[ -n $(git status --porcelain) ]]; then
     exit 1
 fi
 
+script_directory="$(unset CDPATH && cd $(dirname $0) && pwd -P)"
+echo $script_directory
+
 remove_storyboard_helper.sh .
 
 if [[ $? != 0 ]]; then
