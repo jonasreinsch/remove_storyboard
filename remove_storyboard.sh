@@ -17,9 +17,11 @@ if [[ ! -d "$project_directory" ]]; then
     exit 1
 fi
 
-# normalize the project directory (readlink -f not available under OS X,
-# therefore emulate it)
-project_directory="$(unset CDPATH && cd "$project_directory" && pwd)"
+# - normalize the project directory (readlink -f not available under OS X,
+#   therefore emulate it)
+# - the -P option tells pwd to display the 'physical' path,
+#   without symbolic links
+project_directory="$(unset CDPATH && cd "$project_directory" && pwd -P)"
 
 project_name="$(basename $project_directory)"
 
