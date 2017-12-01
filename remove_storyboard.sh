@@ -17,10 +17,15 @@ if [[ -n $(git status --porcelain) ]]; then
     exit 1
 fi
 
+# - remove_storyboard_helper.sh is expected in the same directory
+#   as remove_storyboard.sh (script_directory)
+# - normalize the script directory (readlink -f not available under OS X,
+#   therefore emulate it)
+# - the -P option tells pwd to display the 'physical' path,
+#   without symbolic links
 script_directory="$(unset CDPATH && cd $(dirname $0) && pwd -P)"
-echo $script_directory
 
-remove_storyboard_helper.sh .
+"${script_directory}"/remove_storyboard_helper.sh .
 
 if [[ $? != 0 ]]; then
     echo "remove_storyboard_helper.sh returned an error."
